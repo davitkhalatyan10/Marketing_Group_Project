@@ -1,24 +1,23 @@
-PythonPackageProject/ #githhub repo
-├── customerfrequency/
-│
-│
-│
-│
-│
-│
-│
-|
-│
-│
-├── tests/
-│   ├── __init__.py
-│   ├── test_module1.py
-│   └── test_module2.py
-|── example.ipynb # showing how it works
-|── run.py # in order to run an API
-|── docs/ #this folder we need for documentation
-|── .gitignore
-|── requirments.txt
-├── README.md
-├── LICENSE
-└── setup.py
+name: customerfreq
+on:
+  push:
+    branches:
+      - master 
+      - main
+permissions:
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+      - uses: actions/cache@v2
+        with:
+          key: ${{ github.ref }}
+          path: .cache
+      - run: pip install mkdocs-material
+      - run: pip install pillow cairosvg
+      - run: mkdocs gh-deploy --force
