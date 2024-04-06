@@ -1,0 +1,101 @@
+menu_id,name,price,size
+1,Iced Blonde Vanilla Latte,600,0.75
+2,Chai Crème Frappuccino,750,0.25
+3,Featured / Seasonal Cookie,600,0.5
+4,Oleato Caffe Latte w/ Oatmilk*,350,0.75
+5,Caffè Misto,600,0.25
+6,Iced Chai Tea Latte,550,0.25
+7,Mocha Frappuccino,550,0.25
+8,Iced Espresso,900,0.5
+9,Vanilla Bean Crème Frappuccino,650,0.5
+10,Iced Black Tea,900,0.5
+11,Iced Chai Tea Latte,750,0.25
+12,Caramel Ribbon Crunch Crème Frappuccino,650,0.5
+13,Iced Caffe Americano,650,0.75
+14,Caramel Ribbon Crunch Crème Frappuccino,750,0.75
+15,Cinnamon Caramel Cream Nitro Cold Brew,600,0.5
+16,Chai Crème Frappuccino,500,0.5
+17,Espresso con Panna,600,0.25
+18,Matcha Crème Frappuccino,350,0.25
+19,Java Chip Frappuccino,450,0.75
+20,Cold Brew,750,0.5
+21,Flat White,900,0.25
+22,Caffè Vanilla Frappuccino,600,0.25
+23,Featured / Seasonal Cookie,550,0.25
+24,Caramel Frappuccino,550,0.25
+25,Iced Green Tea,650,0.25
+26,Cold Brew,450,0.5
+27,Oleato Caffe Latte w/ Oatmilk*,450,0.75
+28,Vanilla Bean Crème Frappuccino,1200,0.25
+29,Iced Honey Almondmilk Flat White,900,0.25
+30,White Chocolate Mocha Frappuccino,650,0.75
+31,Iced Passion Tango Tea,600,0.5
+32,Cinnamon Dolce Latte,1200,0.5
+33,Iced Hazelnut Oatmilk Shaken Espresso,500,0.25
+34,Iced Chai Tea Latte,400,0.5
+35,Iced Hazelnut Oatmilk Shaken Espresso,500,0.25
+36,Caramel Ribbon Crunch Frappuccino,500,0.5
+37,Caffè Misto,650,0.75
+38,Java Chip Frappuccino,900,0.25
+39,Iced Caffe Americano,600,0.75
+40,Caffè Latte,350,0.5
+41,Cold Brew,500,0.5
+42,Java Chip Frappuccino,600,0.75
+43,Caffè Misto,900,0.5
+44,Oleato Caffe Latte w/ Oatmilk*,450,0.5
+45,Cappuccino,600,0.5
+46,Caffè Misto,1200,0.75
+47,Iced Peach Green Tea Lemonade,400,0.5
+48,Chocolate Chip Cookie,350,0.25
+49,Iced Royal English Breakfast Tea,1200,0.5
+50,Iced Matcha Tea Lemonade,900,0.75
+51,Oleato Caffe Latte w/ Oatmilk*,600,0.25
+52,Iced Black Tea,750,0.5
+53,Espresso,750,0.25
+54,Iced Flat White,600,0.25
+55,Caramel Macchiato,750,0.75
+56,Iced Green Tea,450,0.5
+57,Cold Brew Coffee with Milk,650,0.75
+58,Black Tea,400,0.75
+59,Espresso,550,0.5
+60,Matcha Tea Latte,550,0.25
+61,Strawberry Crème Frappuccino,600,0.25
+62,Black Tea,400,0.25
+63,Cold Brew Coffee with Milk,400,0.25
+64,Espresso,350,0.75
+65,Iced White Chocolate Mocha,600,0.25
+66,Caramel Macchiato,750,0.75
+67,Iced Honey Almondmilk Flat White,500,0.5
+68,Chocolate Cream Cold Brew,450,0.25
+69,Espresso,1200,0.5
+70,Iced Black Tea Lemonade,750,0.25
+71,Iced Royal English Breakfast Tea,900,0.25
+72,Vanilla Cookie,900,0.25
+73,Cold Brew Coffee with Milk,550,0.5
+74,Iced Mocha,900,0.5
+75,Chai Crème Frappuccino,1200,0.25
+76,Cold Brew Coffee with Milk,450,0.25
+77,Caffè Vanilla Frappuccino,450,0.5
+78,Mocha Frappuccino,450,0.5
+79,Vanilla Bean Crème Frappuccino,600,0.75
+80,Chocolate Cookie Crumble Crème Frappuccino,350,0.75
+81,White Chocolate Mocha,750,0.75
+82,Featured / Seasonal Cookie,550,0.5
+83,Iced Peach Green Tea Lemonade,400,0.5
+84,Iced Chai Tea Latte,750,0.25
+85,Cinnamon Caramel Cream Cold Brew,1200,0.75
+86,Iced Matcha Tea Lemonade,500,0.25
+87,Royal English Breakfast Tea Latte,1200,0.25
+88,Flat White,450,0.5
+89,Chocolate Cookie Crumble Crème Frappuccino,600,0.5
+90,Black Tea,1200,0.75
+91,Vanilla Bean Crème Frappuccino,450,0.5
+92,Caramel Ribbon Crunch Frappuccino,1200,0.25
+93,White Chocolate Crème Frappuccino,500,0.75
+94,Cold Brew,400,0.5
+95,Iced Peach Green Tea Lemonade,500,0.75
+96,Vanilla Bean Crème Frappuccino,600,0.25
+97,Vanilla Cookie,400,0.25
+98,Iced Mocha,600,0.5
+99,Iced Honey Almondmilk Flat White,500,0.25
+100,Caffè Vanilla Frappuccino,550,0.25
