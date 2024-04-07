@@ -5,7 +5,7 @@ from sklearn.metrics import mean_squared_error
 import pandas as pd
 
 # Simulate data or load your dataset
-df = pd.read_csv("CustomerFrequency/Data/order_data.csv")
+df = pd.read_csv("../Data/order_data.csv")
 print(df)
 X = df.drop('quantity_ordered', axis=1)
 
