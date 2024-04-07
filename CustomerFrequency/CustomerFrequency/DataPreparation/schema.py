@@ -64,9 +64,11 @@ class Order(Base):
     menu_id = Column(Integer, ForeignKey('Menu.menu_id'))
     customer_id = Column(Integer, ForeignKey('customers.customer_id'))
 
+
+
 # Define the Sales table
 class Transaction(Base):
-    __tablename__ = "transaction"
+    __tablename__ = "transaction1"
 
     transaction_id = Column(Integer, primary_key=True)
     date_of_payment = Column(DateTime)
@@ -76,10 +78,9 @@ class Transaction(Base):
     employee_id = Column(Integer, ForeignKey('employees.employee_id'))
    
 
-    order = relationship("Order")
+    # order = relationship("Order")
     customer = relationship("Customers")
-    employee = relationship("Employee")
-    menu = relationship("Menu")
-    transaction = relationship("Transaction")
+    employee = relationship("Employees")
+    # menu = relationship("Menu")
 
 Base.metadata.create_all(engine)
