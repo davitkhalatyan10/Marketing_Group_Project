@@ -1,10 +1,10 @@
 # If creating DB first time please run it with below command too
-from CustomerFrequency.DataPreparation.schema import * 
+#from CustomerFrequency.DataPreparation.schema import * 
 from CustomerFrequency.DataPreparation import SqlHandler 
 from CustomerFrequency.logger import CustomFormatter
 import pandas as pd
 
-Inst = SqlHandler('temp', 'menu') 
+Inst = SqlHandler('temp', 'menu')  
 data = pd.read_csv('Data/menu_data.csv') 
 Inst.insert_many(data) 
 Inst.close_cnxn()
