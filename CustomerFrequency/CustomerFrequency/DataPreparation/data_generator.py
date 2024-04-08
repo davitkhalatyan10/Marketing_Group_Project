@@ -85,10 +85,11 @@ def generate_orders(order_id,menu_id,customer_id):
     return {
         "order_id": order_id,
         "date_of_order": random_date,
-        "price": random.randrange(0,30000,10),
         "quantity_ordered": random.randint(1,20),
         "menu_id": menu_id,
-        "customer_id": customer_id
+        "customer_id": customer_id,
+        "price": random.randrange(0,30000,10)
+        
 
     }
 
