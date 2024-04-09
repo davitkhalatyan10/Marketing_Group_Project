@@ -1,10 +1,7 @@
 
 # from ..logger import CustomFormatter
-
 import logging
 import os
-
-import logging
 from ..logger import CustomFormatter
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -58,12 +55,10 @@ class Order(Base):
 
     order_id = Column(Integer, primary_key=True)
     date_of_order = Column(DateTime)
-    status = Column(String)
-    price_of_order = Column (Integer)
     quantity_ordered = Column(Integer)
     menu_id = Column(Integer, ForeignKey('Menu.menu_id'))
     customer_id = Column(Integer, ForeignKey('customers.customer_id'))
-
+    price = Column (Integer)
 
 
 # Define the Sales table
