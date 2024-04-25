@@ -1,6 +1,7 @@
 # Marketing_Group_Project
 
 https://test.pypi.org/project/CustomerFrequency/
+https://pypi.org/manage/project/customerfrequency/releases/
 
 
 **Members:**
