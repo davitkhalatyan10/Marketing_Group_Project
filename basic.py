@@ -1,7 +1,7 @@
 # If creating DB first time please run it with below command too
-#from CustomerFrequency.DataPreparation.schema import * 
-from CustomerFrequency.DataPreparation import SqlHandler 
-from CustomerFrequency.logger import CustomFormatter
+#from CustomerFrequency.DataBase.schema import * 
+from CustomerFrequency.DataBase import SqlHandler 
+from CustomerFrequency.Logger import CustomFormatter
 import pandas as pd
 
 Inst = SqlHandler('temp', 'menu')  
