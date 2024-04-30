@@ -2,7 +2,7 @@ from faker import Faker
 import pandas as pd
 import random
 import logging
-from ..logger import CustomFormatter
+from ..Logger import CustomFormatter
 import os
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel(logging.DEBUG)
