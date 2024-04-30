@@ -149,7 +149,7 @@ class SqlHandler:
         self.cnxn.commit()
         logger.info('Table updated successfully.')
 
-        
+
 
     def top_visits():
         orders = SqlHandler('dbname', 'orders')
@@ -193,6 +193,17 @@ class SqlHandler:
                         ORDER BY customer_id;''')
         counts = cursor.fetchall()
         return counts, differences
+    
+    def phone_numbers():
+        orders = SqlHandler('dbname', 'orders')
+        cursor = orders.cursor
+        cursor.execute('''SELECT c.customer_id, c.phone_number FROM customers c
+                    INNER JOIN orders o ON c.customer_id = o.customer_id
+                    WHERE o.date_of_order <= DATE_SUB(NOW(), INTERVAL {n} DAY);
+                    ''')
+        phone_nums = cursor.fetchall()
+        return phone_nums
+
    
         
 
