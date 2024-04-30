@@ -54,7 +54,7 @@ async def average_visit_frequency():
     return dict(frequencies)
 
 @app.get("/get_data/no_visit")
-async def no_visit30():
+async def no_visit_n_days(n:int):
     '''
     Select all customers that have not visited us in last 30 or more days.
     '''
@@ -62,7 +62,7 @@ async def no_visit30():
     cursor = orders.cursor
     cursor.execute('''SELECT DISTINCT c.customer_id, c.first_name, c.last_name FROM customers c
                         INNER JOIN orders o ON c.customer_id = o.customer_id
-                        WHERE o.date_of_order <= DATE_SUB(NOW(), INTERVAL 30 DAY);
+                        WHERE o.date_of_order <= DATE_SUB(NOW(), INTERVAL {n} DAY);
                         ''')
     customers = cursor.fetchall()
     result = []
