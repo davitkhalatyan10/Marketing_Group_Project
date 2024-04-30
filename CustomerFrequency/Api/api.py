@@ -70,25 +70,20 @@ async def get_visualization3():
 
 
 @app.get("/get_data/avg_frequency")
-async def average_visit_frequency():
+async def reach_lowest_average_visit_frequency(n):
     '''
     Calculate visits per day for each customer.
     '''
     orders = sqlint.SqlHandler(dbname, 'orders')
-    cursor = orders.cursor
-    cursor.execute('''SELECT DATEDIFF(day, MAX(date_of_order), MIN(date_of_order)), customer_id FROM orders
-                        GROUP BY  customer_id
-                        ORDER BY customer_id;''')
-    differences = cursor.fetchall()
-    cursor.execute('''SELECT COUNT(customer_id), customer_id FROM orders
-                        GROUP BY customer_id
-                        ORDER BY customer_id;''')
-    counts = cursor.fetchall()
+    counts, differences = orders.average_visit_frequency()
     frequencies = []
     for count, difference in (counts, differences):
         avg = round(count[0]/difference[0], 1)
-        frequencies.append((avg, count[1]))
-    return dict(frequencies)
+        frequencies.append((avg, count[1], count[2]))
+    lowest = sorted(frequencies, key=lambda x: x[0])[-1: -1 * n]
+    for customer in lowest:
+        status = send_sms(customer[2], "You rarely visit us but we remember you...")
+    return status
 
 @app.get("/get_data/no_visit")
 async def attract_no_visit_n_days(n:int):
@@ -96,12 +91,7 @@ async def attract_no_visit_n_days(n:int):
     Select all customers that have not visited us in last 30 or more days.
     '''
     orders = sqlint.SqlHandler(dbname, 'orders')
-    cursor = orders.cursor
-    cursor.execute('''SELECT DISTINCT c.customer_id, c.first_name, c.last_name, c.phonenumber FROM customers c
-                        INNER JOIN orders o ON c.customer_id = o.customer_id
-                        WHERE o.date_of_order <= DATE_SUB(NOW(), INTERVAL {n} DAY);
-                        ''')
-    customers = cursor.fetchall()
+    customers = orders.no_visit_n_days(n)
     result = []
     for row in customers:
         name = row[1] + ' ' + row[2]
@@ -116,12 +106,7 @@ async def appreciate_top_visits(n):
     Return top n of customers with the highest visit frequency.
     '''
     orders = sqlint.SqlHandler(dbname, 'orders')
-    cursor = orders.cursor
-    cursor.execute('''SELECT COUNT(o.customer_id) AS vsits, c.customer_id, c.first_name, c.last_name, c.phonenumber FROM orders o 
-                        INNER JOIN customers c ON c.customer_id = o.customer_id
-                        GROUP BY o.customer_id
-                        ORDER BY visits;''')
-    visits = cursor.fetchall()
+    visits = orders.top_visits()
     top = visits[:n]
     result = {}
     for row in top:
@@ -132,19 +117,18 @@ async def appreciate_top_visits(n):
     return status
 
 @app.get("/get_data/bestseller")
-async def bestseller():
+async def bestseller_notification():
     '''
     Get the customers' most beloved product.
     '''
     orders = sqlint.SqlHandler(dbname, 'orders')
-    cursor = orders.cursor
-    cursor.execute('''SELECT m.menu_id, m.name, m.size, SUM(o.quantity_ordered) AS quantity FROM Menu m
-                        INNER JOIN orders o ON m.menu_id = o.menu_id
-                        GROUP BY o.menu_id
-                        ORDER BY quantity''')
-    top = cursor.fetchall()[0]
+    top = orders.bestseller()
     bestseller = {top[0]: [top[1], top[2]]}
-    return bestseller
+    phones = orders.phone_numbers()
+    for phone in phones:
+        status = send_sms(phone, f"If you have not tried our {top[2]} {top[1]}, then it is time to do it right now!!!")
+
+    return status
 
 @app.post("/create_data")
 async def create_item(item):
