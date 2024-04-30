@@ -79,4 +79,9 @@ class Transaction(Base):
     employee = relationship("Employees")
     # menu = relationship("Menu")
 
+
+class RFM(Base):
+    __tablename__='rfm'
+    #TODO customer_id pk; recency, frequence, monetery rfm_score
+
 Base.metadata.create_all(engine)
