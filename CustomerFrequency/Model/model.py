@@ -31,3 +31,4 @@ mse = mean_squared_error(y_test, predictions)
 
 print(f"The Mean Squared Error of the model is: {mse}")
 
+#TODO create a RFM model and push the results to database, :
