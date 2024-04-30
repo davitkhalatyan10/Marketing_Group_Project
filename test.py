@@ -13,18 +13,24 @@ import glob
 
 PATH='Data'
 
-mapping={'customer_data.csv': 'customers',
+# mapping={
+#         'customer_data.csv': 'customers',
+#         'customer_data.csv': 'customers',
+#         'customer_data.csv': 'customers',
+#         'customer_data.csv': 'customers',
+#         'customer_data.csv': 'customers'
          
-         }
+#          }
 
 from CustomerFrequency.DataBase.sql_interactions import SqlHandler
 
 
 
 
-files=glob.glob(PATH+'/*.csv')
+# files=glob.glob(PATH+'/*.csv')
 
-for i in files:
-    inst=SqlHandler('')
-    print(pd.read_csv(i).head())
-    print(os.path.basename(i))
+# def bulk_insert_from_csv(files:list):
+#     for i in files:
+#         inst=SqlHandler('')
+#         print(pd.read_csv(i).head())
+#         print(os.path.basename(i))
