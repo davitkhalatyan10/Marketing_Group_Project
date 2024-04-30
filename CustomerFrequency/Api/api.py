@@ -1,12 +1,47 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse
-from pathlib import Path
+#from fastapi.responses import FileResponse
+import serial
+#from pathlib import Path
 import pandas as pd
-from ..DataBase import SqlHandler
+from ..DataBase import SqlHandler as sqlint
 
 
 app = FastAPI()
 dbname = 'temp'
+ser = serial.Serial('COM1', 9600, timeout=1)
+
+@app.post("/send-sms/")
+async def send_sms(phone_number: str, message: str):
+    # Initialize the modem by sending AT command
+    ser.write(b'AT\r\n')
+    response = ser.readline().decode('utf-8').strip()
+    if response != 'OK':
+        raise HTTPException(status_code=500, detail="Failed to initialize modem")
+
+    # Set the SMS text mode
+    ser.write(b'AT+CMGF=1\r\n')
+    response = ser.readline().decode('utf-8').strip()
+    if response != 'OK':
+        raise HTTPException(status_code=500, detail="Failed to set SMS text mode")
+
+    # Send SMS command
+    ser.write(f'AT+CMGS="{phone_number}"\r\n'.encode('utf-8'))
+    response = ser.readline().decode('utf-8').strip()
+    if response != '>':
+        raise HTTPException(status_code=500, detail="Failed to send SMS command")
+
+    # Send SMS message
+    ser.write(f'{message}\r\n'.encode('utf-8'))
+    ser.write(bytes([26]))  # CTRL+Z to indicate end of message
+    response = ser.readlines()
+    if b'OK' not in response:
+        raise HTTPException(status_code=500, detail="Failed to send SMS")
+
+    return {"status": "Message sent successfully"}
+
+@app.on_event("shutdown")
+def shutdown_event():
+    ser.close()
 
 
 @app.get("/")
@@ -16,7 +51,7 @@ async def root():
 @app.get("/get_data")
 async def get_records():
     return {'data': 'data'}
-
+'''
 @app.get("/get_image1")
 async def get_visualization1():
     image_path = Path('visualization1.png')
@@ -31,6 +66,8 @@ async def get_visualization2():
 async def get_visualization3():
     image_path = Path('visualization3.png')
     return FileResponse(image_path)
+'''
+
 
 @app.get("/get_data/avg_frequency")
 async def average_visit_frequency():
@@ -54,13 +91,13 @@ async def average_visit_frequency():
     return dict(frequencies)
 
 @app.get("/get_data/no_visit")
-async def no_visit_n_days(n:int):
+async def attract_no_visit_n_days(n:int):
     '''
     Select all customers that have not visited us in last 30 or more days.
     '''
     orders = sqlint.SqlHandler(dbname, 'orders')
     cursor = orders.cursor
-    cursor.execute('''SELECT DISTINCT c.customer_id, c.first_name, c.last_name FROM customers c
+    cursor.execute('''SELECT DISTINCT c.customer_id, c.first_name, c.last_name, c.phonenumber FROM customers c
                         INNER JOIN orders o ON c.customer_id = o.customer_id
                         WHERE o.date_of_order <= DATE_SUB(NOW(), INTERVAL {n} DAY);
                         ''')
@@ -69,17 +106,18 @@ async def no_visit_n_days(n:int):
     for row in customers:
         name = row[1] + ' ' + row[2]
         result.append((row[0], name))
+        status = send_sms(row[3], "We have got free cookies for you!!!")
 
-    return dict(result)
+    return status
 
 @app.get("/get_data/top_customers/{n}")
-async def top_visits(n):
+async def appreciate_top_visits(n):
     '''
     Return top n of customers with the highest visit frequency.
     '''
     orders = sqlint.SqlHandler(dbname, 'orders')
     cursor = orders.cursor
-    cursor.execute('''SELECT COUNT(o.customer_id) AS vsits, c.customer_id, c.first_name, c.last_name FROM orders o 
+    cursor.execute('''SELECT COUNT(o.customer_id) AS vsits, c.customer_id, c.first_name, c.last_name, c.phonenumber FROM orders o 
                         INNER JOIN customers c ON c.customer_id = o.customer_id
                         GROUP BY o.customer_id
                         ORDER BY visits;''')
@@ -89,8 +127,9 @@ async def top_visits(n):
     for row in top:
         name = row[2] + ' ' + row[3]
         result[row[1]] = (name, row[0])
+        status = send_sms(row[3], "We are happy that you are our customer!!!")
 
-    return result
+    return status
 
 @app.get("/get_data/bestseller")
 async def bestseller():
