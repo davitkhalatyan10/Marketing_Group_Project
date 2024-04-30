@@ -149,6 +149,50 @@ class SqlHandler:
         self.cnxn.commit()
         logger.info('Table updated successfully.')
 
+        
+
+    def top_visits():
+        orders = SqlHandler('dbname', 'orders')
+        cursor = orders.cursor
+        cursor.execute('''SELECT COUNT(o.customer_id) AS vsits, c.customer_id, c.first_name, c.last_name FROM orders o 
+                                INNER JOIN customers c ON c.customer_id = o.customer_id
+                                GROUP BY o.customer_id
+                                ORDER BY visits;''')
+        visits = cursor.fetchall()
+        return visits
+    
+    def bestseller():
+        orders = SqlHandler('dbname', 'orders')
+        cursor = orders.cursor
+        cursor.execute('''SELECT m.menu_id, m.name, m.size, SUM(o.quantity_ordered) AS quantity FROM Menu m
+                        INNER JOIN orders o ON m.menu_id = o.menu_id
+                        GROUP BY o.menu_id
+                        ORDER BY quantity''')
+        top = cursor.fetchall()[0]
+        return top
+    
+    def no_visits_n_days():
+        orders = SqlHandler('dbname', 'orders')
+        cursor = orders.cursor
+        cursor.execute('''SELECT DISTINCT c.customer_id, c.first_name, c.last_name FROM customers c
+                        INNER JOIN orders o ON c.customer_id = o.customer_id
+                        WHERE o.date_of_order <= DATE_SUB(NOW(), INTERVAL {n} DAY);
+                        ''')
+        customers = cursor.fetchall()
+        return customers
+    
+    def average_visit_frequency():
+        orders = SqlHandler('dbname', 'orders')
+        cursor = orders.cursor
+        cursor.execute('''SELECT DATEDIFF(day, MAX(date_of_order), MIN(date_of_order)), customer_id FROM orders
+                        GROUP BY  customer_id
+                        ORDER BY customer_id;''')
+        differences = cursor.fetchall()
+        cursor.execute('''SELECT COUNT(customer_id), customer_id FROM orders
+                        GROUP BY customer_id
+                        ORDER BY customer_id;''')
+        counts = cursor.fetchall()
+        return counts, differences
    
         
 

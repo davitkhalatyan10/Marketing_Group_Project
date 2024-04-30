@@ -82,6 +82,11 @@ class Transaction(Base):
 
 class RFM(Base):
     __tablename__='rfm'
-    #TODO customer_id pk; recency, frequence, monetery rfm_score
+    customer_id = Column(Integer, primary_key=True )
+    recency = Column(Integer)
+    frequency = Column(Integer)
+    monetary = Column(Integer)
+    rfm_score = Column(Integer)
+   
 
 Base.metadata.create_all(engine)
