@@ -1,2 +1,2 @@
 #from schema import *
-from CustomerFrequency.DataPreparation.schema import * 
+from CustomerFrequency.DataBase.schema import * 
