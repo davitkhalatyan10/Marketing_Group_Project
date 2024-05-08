@@ -167,7 +167,7 @@ class SqlHandler:
 
 
     def top_visits(self):
-        self.cursor.execute('''SELECT COUNT(o.customer_id) AS vsits, c.customer_id, c.first_name, c.last_name FROM orders o 
+        self.cursor.execute('''SELECT COUNT(o.customer_id) AS visits, c.customer_id, c.first_name, c.last_name FROM orders o 
                                 INNER JOIN customers c ON c.customer_id = o.customer_id
                                 GROUP BY o.customer_id
                                 ORDER BY visits;''')
@@ -182,10 +182,10 @@ class SqlHandler:
         top = self.cursor.fetchall()[0]
         return top
     
-    def no_visits_n_days(self):
-        self.cursor.execute('''SELECT DISTINCT c.customer_id, c.first_name, c.last_name FROM customers c
+    def no_visits_n_days(self, n):
+        self.cursor.execute(f'''SELECT DISTINCT c.customer_id, c.first_name, c.last_name FROM customers c
                         INNER JOIN orders o ON c.customer_id = o.customer_id
-                        WHERE o.date_of_order <= DATE_SUB(NOW(), INTERVAL {n} DAY);
+                        WHERE o.date_of_order <= datetime('now', '-{n} days');
                         ''')
         customers = self.cursor.fetchall()
         return customers
@@ -210,10 +210,7 @@ class SqlHandler:
         return counts, differences
     
     def phone_numbers(self):
-        self.cursor.execute('''SELECT c.customer_id, c.phone_number FROM customers c
-                    INNER JOIN orders o ON c.customer_id = o.customer_id
-                    WHERE o.date_of_order <= DATE_SUB(NOW(), INTERVAL {n} DAY);
-                    ''')
+        self.cursor.execute(f'''SELECT c.customer_id, c.phone_number FROM customers c;''')
         phone_nums = self.cursor.fetchall()
         return phone_nums
 
