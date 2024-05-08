@@ -1,15 +1,15 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI #, HTTPException
 #from fastapi.responses import FileResponse
-import serial
+#import serial
 #from pathlib import Path
 import pandas as pd
-from ..DataBase import SqlHandler as sqlint
+from ..DataBase import sql_interactions as sqlint
 
 
 app = FastAPI()
 dbname = 'temp'
-ser = serial.Serial('COM1', 9600, timeout=1)
-
+#ser = serial.Serial('COM1', 9600, timeout=1)
+'''
 @app.post("/send-sms/")
 async def send_sms(phone_number: str, message: str):
     # Initialize the modem by sending AT command
@@ -42,7 +42,7 @@ async def send_sms(phone_number: str, message: str):
 @app.on_event("shutdown")
 def shutdown_event():
     ser.close()
-
+'''
 
 @app.get("/")
 async def root():
@@ -70,38 +70,42 @@ async def get_visualization3():
 
 
 @app.get("/get_data/avg_frequency")
-async def reach_lowest_average_visit_frequency(n):
+async def reach_lowest_average_visit_frequency(n: int):
     '''
-    Calculate visits per day for each customer.
+    Calculate visits per day for each customer that have purchased our products more than once.
+     Then send a message to them.
     '''
     orders = sqlint.SqlHandler(dbname, 'orders')
     counts, differences = orders.average_visit_frequency()
     frequencies = []
-    for count, difference in (counts, differences):
-        avg = round(count[0]/difference[0], 1)
-        frequencies.append((avg, count[1], count[2]))
-    lowest = sorted(frequencies, key=lambda x: x[0])[-1: -1 * n]
-    for customer in lowest:
-        status = send_sms(customer[2], "You rarely visit us but we remember you...")
+    for count, difference in zip(counts, differences):
+        if difference[0] != 0:
+            avg = round(count[0]/difference[0], 1)
+            frequencies.append((avg, count[1], count[2]))
+    lowest = sorted(frequencies, key=lambda x: x[0])[:n]
+    status = {'message': 'SMS not sent...'}
+    #for customer in lowest:
+        #status = send_sms(customer[2], "You rarely visit us but we remember you...")
     return status
 
 @app.get("/get_data/no_visit")
-async def attract_no_visit_n_days(n:int):
+async def attract_no_visit_n_days(n: int):
     '''
-    Select all customers that have not visited us in last 30 or more days.
+    Select all customers that have not visited us in last n or more days.
     '''
     orders = sqlint.SqlHandler(dbname, 'orders')
-    customers = orders.no_visit_n_days(n)
+    customers = orders.no_visits_n_days(n)
     result = []
-    for row in customers:
-        name = row[1] + ' ' + row[2]
-        result.append((row[0], name))
-        status = send_sms(row[3], "We have got free cookies for you!!!")
+    status = {'message': 'SMS not sent...'}
+    #for row in customers:
+       # name = row[1] + ' ' + row[2]
+       # result.append((row[0], name))
+       # status = send_sms(row[3], "We have got free cookies for you!!!")
 
     return status
 
 @app.get("/get_data/top_customers/{n}")
-async def appreciate_top_visits(n):
+async def appreciate_top_visits(n: int):
     '''
     Return top n of customers with the highest visit frequency.
     '''
@@ -109,10 +113,11 @@ async def appreciate_top_visits(n):
     visits = orders.top_visits()
     top = visits[:n]
     result = {}
-    for row in top:
-        name = row[2] + ' ' + row[3]
-        result[row[1]] = (name, row[0])
-        status = send_sms(row[3], "We are happy that you are our customer!!!")
+    status = {'message': 'SMS not sent...'}
+    #for row in top:
+       # name = row[2] + ' ' + row[3]
+        #result[row[1]] = (name, row[0])
+        #status = send_sms(row[3], "We are happy that you are our customer!!!")
 
     return status
 
@@ -125,8 +130,9 @@ async def bestseller_notification():
     top = orders.bestseller()
     bestseller = {top[0]: [top[1], top[2]]}
     phones = orders.phone_numbers()
-    for phone in phones:
-        status = send_sms(phone, f"If you have not tried our {top[2]} {top[1]}, then it is time to do it right now!!!")
+    status = {'message': 'SMS not sent...'}
+    #for phone in phones:
+        #status = send_sms(phone, f"If you have not tried our {top[2]} {top[1]}, then it is time to do it right now!!!")
 
     return status
 
