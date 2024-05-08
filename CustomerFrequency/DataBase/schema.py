@@ -46,8 +46,8 @@ class Menu(Base):
 
     menu_id = Column(Integer, primary_key=True)
     name = Column(String)
-    size = Column (String)
     price = Column(Integer)
+    size = Column (String)
 
 
 # Define the Order table
@@ -80,13 +80,17 @@ class Transaction(Base):
     # menu = relationship("Menu")
 
 
-class RFM(Base):
-    __tablename__='rfm'
-    customer_id = Column(Integer, primary_key=True )
-    recency = Column(Integer)
-    frequency = Column(Integer)
-    monetary = Column(Integer)
-    rfm_score = Column(Integer)
-   
+class CustomerSegmentation(Base):
+    __tablename__='segmentation'
+
+    satisfaction_score = Column(Integer)
+    customer_id = Column(Integer,primary_key=True)
+    first_name = Column(String, ForeignKey('customers.first_name') )
+    last_name = Column(String, ForeignKey('customers.last_name') )
+    phone_number = Column(String, ForeignKey('customers.phone_number'))
+    transaction_count = Column(Integer)
+    customer_segment = Column(String)
+    rfm = relationship("segmentation")
+
 
 Base.metadata.create_all(engine)
