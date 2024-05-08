@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 import numpy as np
 import os
-from ..Logger import CustomFormatter
+from CustomerFrequency.Logger import CustomFormatter
 
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel(logging.DEBUG)
@@ -30,10 +30,16 @@ class SqlHandler:
     def insert_one()->None:
         pass
 
-    def get_table_columns(self)->list:
+    def get_table_columns(self) -> list:
+        """
+        Retrieves column names of the specified table.
+
+        Returns:
+            list: List of column names.
+        """
         self.cursor.execute(f"PRAGMA table_info({self.table_name});")
         columns = self.cursor.fetchall()
-        
+
         column_names = [col[1] for col in columns]
         logger.info(f'the list of columns: {column_names}')
         # self.cursor.close()
@@ -59,31 +65,43 @@ class SqlHandler:
         logging.info(f"table '{self.table_name}' deleted.")
         logger.debug('using drop table function')
 
-    def insert_many(self, df:pd.DataFrame) -> str:
-        
-        df=df.replace(np.nan, None) # for handling NULLS
+    def insert_many(self, df: pd.DataFrame) -> str:
+        """
+        Inserts multiple rows into the specified table
+        based on the given Pandas DataFrame.
+
+        Args:
+            df (pd.DataFrame): Pandas DataFrame
+            containing the data to be inserted.
+
+        Raises:
+            Exception: If an error occurs
+            while inserting the data into the table.
+        """
+        df = df.replace(np.nan, None)  # for handling NULLS
         df.rename(columns=lambda x: x.lower(), inplace=True)
         columns = list(df.columns)
         logger.info(f'BEFORE the column intersection: {columns}')
         sql_column_names = [i.lower() for i in self.get_table_columns()]
         columns = list(set(columns) & set(sql_column_names))
         logger.info(f'AFTER the column intersection: {columns}')
-        ncolumns=list(len(columns)*'?')
-        data_to_insert=df.loc[:,columns]
-    
-        values=[tuple(i) for i in data_to_insert.values]
-        logger.info(f'the shape of the table which is going to be imported {data_to_insert.shape}')
+        ncolumns = list(len(columns)*'?')
+        data_to_insert = df.loc[:, columns]
 
-        
-        if len(columns)>1:
-            cols,params =', '.join(columns), ', '.join(ncolumns)
+        values = [tuple(i) for i in data_to_insert.values]
+        logger.info(f'''the shape of the table
+                    which is going to be imported {data_to_insert.shape}''')
+
+        if len(columns) > 1:
+            cols, params = ', '.join(columns), ', '.join(ncolumns)
         else:
-            cols,params =columns[0],ncolumns[0]
-            
+            cols, params = columns[0], ncolumns[0]
+
         logger.info(f'insert structure: colnames: {cols} params: {params}')
         logger.info(values[0])
-        query=f"""INSERT INTO  {self.table_name} ({cols}) VALUES ({params});"""
-        
+        query = f"""INSERT INTO  {self.table_name}
+        ({cols}) VALUES ({params});"""
+
         logger.info(f'QUERY: {query}')
 
         self.cursor.executemany(query, values)
@@ -93,12 +111,9 @@ class SqlHandler:
         except:
             pass
 
-
         self.cnxn.commit()
-      
-        
-        logger.warning('the data is loaded')
 
+        logger.warning('the data is loaded')
 
 
     def from_sql_to_pandas(self, chunksize:int, id_value:str) -> pd.DataFrame:
@@ -183,10 +198,13 @@ class SqlHandler:
                             ORDER BY o.customer_id;''')
         counts = self.cursor.fetchall()
 
-        self.cursor.execute('''SELECT DATEDIFF(day, MAX(o.date_of_order), MIN(o.date_of_order)), o.customer_id
+        self.cursor.execute('''
+                            SELECT julianday(MAX(o.date_of_order)) - julianday(MIN(o.date_of_order)), o.customer_id
                             FROM orders o
                             GROUP BY o.customer_id
-                            ORDER BY o.customer_id;''')
+                            ORDER BY o.customer_id;
+                            ''')
+
         differences = self.cursor.fetchall()
 
         return counts, differences
