@@ -167,7 +167,8 @@ class SqlHandler:
 
 
     def top_visits(self):
-        self.cursor.execute('''SELECT COUNT(o.customer_id) AS visits, c.customer_id, c.first_name, c.last_name FROM orders o 
+        self.cursor.execute('''SELECT COUNT(o.customer_id) AS visits, c.customer_id, c.first_name, c.last_name, c.phone_number
+                                FROM orders o 
                                 INNER JOIN customers c ON c.customer_id = o.customer_id
                                 GROUP BY o.customer_id
                                 ORDER BY visits;''')
@@ -183,7 +184,7 @@ class SqlHandler:
         return top
     
     def no_visits_n_days(self, n):
-        self.cursor.execute(f'''SELECT DISTINCT c.customer_id, c.first_name, c.last_name FROM customers c
+        self.cursor.execute(f'''SELECT DISTINCT c.customer_id, c.first_name, c.last_name, c.phone_number FROM customers c
                         INNER JOIN orders o ON c.customer_id = o.customer_id
                         WHERE o.date_of_order <= datetime('now', '-{n} days');
                         ''')
