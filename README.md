@@ -22,16 +22,24 @@ Through the integration of RFM analysis and segmentation techniques, the Custome
 # Result
 With the Customer Frequency Analysis Python Package, businesses can:
 •	Gain insights into customer frequency, recency, and monetary value
+
 •	Segment customers into different groups based on transaction behavior
+
 •	Target specific customer segments with personalized marketing strategies
+
 •	Optimize product offerings and pricing strategies to meet customer needs
+
 •	Enhance customer satisfaction and drive repeat business
 
 # Features
 •	Data Management: Store and retrieve transaction data in a centralized database
+
 •	Frequency Analysis: Identify patterns in customer behavior, such as purchase frequency and recency
+
 •	Segmentation: Segment customers into different groups based on transaction history
+
 •	Visualization: Create charts, graphs, and reports to visualize customer behavior trends
+
 •	API Integration: Integrate with existing systems and workflows using the provided API
 
 # Usage
