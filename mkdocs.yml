@@ -1,10 +1,13 @@
 site_name: Customer Frequency
 
 nav:
-  - Home: index.md
-  - Page: page2.md
-  - api: api.md
-  - sql: sql.md
+  - CustomerFrequency: index.md
+  - User's Guide: installation.md
+  - Setup: setup.md
+  - Logger: Logger.md
+  - API: API.md
+  - SQL: SQL.md
+  - Model: Models.md
 
 plugins:
   - mkdocstrings:

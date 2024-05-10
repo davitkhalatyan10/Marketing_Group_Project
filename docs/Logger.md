@@ -1,0 +1,1 @@
+::: CustomerFrequency.Logger.logger
