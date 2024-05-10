@@ -49,6 +49,7 @@ def convert_date_format(transaction_data):
         transaction_data (DataFrame): Transaction data DataFrame.
     """
     transaction_data['date_of_payment'] = pd.to_datetime(transaction_data['date_of_payment'])
+    return transaction_data
 
 def calculate_transactions_per_customer(transaction_data, customer_data):
     """
@@ -113,7 +114,10 @@ def define_customer_segments(customer_transaction_data):
         DataFrame: DataFrame with customer segments added.
     """
     customer_transaction_data['customer_segment'] = customer_transaction_data['transaction_count'].apply(categorize_customer)
-    return customer_transaction_data
+    customer_segment_distribution = customer_transaction_data['customer_segment'].value_counts()
+    return customer_segment_distribution, customer_transaction_data
+
+    
 
 """We have successfully categorized the customers into segments based on their transaction frequency. Here is the distribution of the customer segments:
 
@@ -184,14 +188,6 @@ def save_data_with_satisfaction_scores(customer_transaction_data, output_file_pa
     
     customer_transaction_data.to_csv(output_file_path, index=False)
 
-df1 = pd.read_csv('/Users/mane/Desktop/Marketing_Group_Project/Data/Customer_Transaction_with_Satisfaction.csv')
-print(df1.head())
-
-print(df1.info())
-print(df1.describe())
-
-correlation = df1['transaction_count'].corr(df1['satisfaction_score'])
-print(f"Correlation coefficient: {correlation}")
 
 """Interpretation of Data Information and Descriptive Statistics:
 1. Data.info() output:
@@ -207,12 +203,12 @@ print(f"Correlation coefficient: {correlation}")
     """
 
 
-def load_data_with_satisfaction_scores(file_path):
     
-    df = pd.read_csv(file_path)
-    return df
+    
 
-def analyze_data(df):
+def analyze_data(file_path):
+
+    df = pd.read_csv(file_path)
     """
     Analyzes customer transaction data.
 
@@ -265,9 +261,34 @@ def main():
     """
     Main function to execute the analysis workflow.
     """
-    customer_file_path = '/Users/mane/Desktop/Marketing_Group_Project/Data/customer_data.csv'
-    transaction_file_path = '/Users/mane/Desktop/Marketing_Group_Project/Data/transactions_data.csv'
-    output_file_path = '/Users/mane/Desktop/Marketing_Group_Project/Data/Customer_Transaction_with_Satisfaction.csv'
+    customer_file_path = './Data/customer_data.csv'
+    transaction_file_path = './Data/transactions_data.csv'
+    output_file_path = './Data/Customer_Transaction_with_Satisfaction.csv'
+
+
+    customer_data, transaction_data = load_data(customer_file_path, transaction_file_path)
+    # display_data_head(customer_data, transaction_data)
+    transaction_data = convert_date_format(transaction_data)
+    customer_transaction_data = calculate_transactions_per_customer(transaction_data, customer_data)
+    customer_segment_distribution,customer_transaction_data = define_customer_segments(customer_transaction_data)
+    # print(customer_segment_distribution)
+    # print(customer_transaction_data)
+
+    customer_transaction_data = generate_satisfaction_scores(customer_transaction_data)
+    # print(customer_transaction_data)
+    customer_transaction_data.drop('first_name', inplace=True, axis=1) 
+    customer_transaction_data.drop('last_name', inplace=True, axis=1) 
+    customer_transaction_data.drop('phone_number', inplace=True, axis=1) 
+    # print(customer_transaction_data)
+    # Attempting to save the updated customer transaction data with satisfaction scores to a CSV file
+    import os 
+    # Check whether the specified 
+    # path exists or not 
+    if os.path.exists(output_file_path):
+        os.remove(output_file_path)
+        save_data_with_satisfaction_scores(customer_transaction_data, output_file_path)
+    else:
+        save_data_with_satisfaction_scores(customer_transaction_data, output_file_path)
 
     # Load data
     customer_data, transaction_data = load_data(customer_file_path, transaction_file_path)
@@ -280,27 +301,22 @@ def main():
 
     # Calculate transactions per customer
     customer_transaction_data = calculate_transactions_per_customer(transaction_data, customer_data)
+    print(customer_transaction_data.head())
 
     # Define customer segments
-    customer_transaction_data = define_customer_segments(customer_transaction_data)
+    customer_segment_distribution,customer_transaction_data = define_customer_segments(customer_transaction_data)
+    print(customer_segment_distribution)
+    print(customer_transaction_data.head())
 
     # Visualize customer segments
-    customer_segment_distribution = customer_transaction_data['customer_segment'].value_counts()
     visualize_customer_segments(customer_segment_distribution)
 
-    # Generate and save satisfaction scores
-    customer_transaction_data = generate_satisfaction_scores(customer_transaction_data)
-    save_data_with_satisfaction_scores(customer_transaction_data, output_file_path)
-
-    # Load data with satisfaction scores
-    df = load_data_with_satisfaction_scores(output_file_path)
-
     # Analyze data
-    analysis_results = analyze_data(df)
+    analysis_results = analyze_data(output_file_path)
     print("\nAnalysis Results:\n", analysis_results)
 
     # Visualize data
-    visualize_data(df)
+    visualize_data(pd.read_csv(output_file_path))
 
 if __name__ == "__main__":
     main()
