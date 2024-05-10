@@ -83,14 +83,13 @@ class Transaction(Base):
 class CustomerSegmentation(Base):
     __tablename__='segmentation'
 
-    satisfaction_score = Column(Integer)
-    customer_id = Column(Integer,primary_key=True)
-    first_name = Column(String, ForeignKey('customers.first_name') )
-    last_name = Column(String, ForeignKey('customers.last_name') )
-    phone_number = Column(String, ForeignKey('customers.phone_number'))
+    id = Column(Integer,primary_key=True)
+    customer_id = Column(Integer, ForeignKey('customers.customer_id'))
+    satisfaction_score = Column(Integer) 
     transaction_count = Column(Integer)
     customer_segment = Column(String)
-    rfm = relationship("segmentation")
 
 
-Base.metadata.create_all(engine)
+    segmentation = relationship("segmentation")
+
+    Base.metadata.create_all(engine)
