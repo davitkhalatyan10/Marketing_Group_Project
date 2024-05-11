@@ -15,10 +15,12 @@ def main():
     rfm_table = rfm.calculate_rfm_scores(transaction_data)
 
     # Save RFM scores to a CSV file
-    rfm_table.to_csv(output_file_path)
+    rfm.save_rfm_csv(output_file_path, rfm_table)
 
     # Display RFM table
     print(rfm_table)
 
 if __name__ == "__main__":
     main()
+
+

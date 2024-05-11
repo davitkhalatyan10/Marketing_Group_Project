@@ -1,5 +1,6 @@
 import CustomerFrequency.Model.customer_segmentation as cs
 import pandas as pd
+import os
 
 def main():
     """
@@ -25,7 +26,6 @@ def main():
     customer_transaction_data.drop('phone_number', inplace=True, axis=1) 
     # print(customer_transaction_data)
     # Attempting to save the updated customer transaction data with satisfaction scores to a CSV file
-    import os 
     # Check whether the specified 
     # path exists or not 
     if os.path.exists(output_file_path):
@@ -46,6 +46,7 @@ def main():
     # Calculate transactions per customer
     customer_transaction_data = cs.calculate_transactions_per_customer(transaction_data, customer_data)
     print(customer_transaction_data.head())
+
 
     # Define customer segments
     customer_segment_distribution,customer_transaction_data = cs.define_customer_segments(customer_transaction_data)
