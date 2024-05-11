@@ -92,4 +92,20 @@ class CustomerSegmentation(Base):
 
     segmentation = relationship("segmentation")
 
-    Base.metadata.create_all(engine)
+class RFMSegmentation(Base):
+    __tablename__='rfm_segmentation'
+
+    id = Column(Integer, primary_key=True)
+    customer_id = Column(Integer, ForeignKey('customers.customer_id'))
+    Recency = Column(Integer) 
+    Frequency = Column(Integer)
+    Monetary = Column(Integer)
+    r_score = Column(Integer)
+    f_score = Column(Integer)
+    m_score = Column(Integer)
+    rfm_score = Column(Integer)
+
+    rfm = relationship("rfm_segmentation")  
+
+Base.metadata.create_all(engine)
+
