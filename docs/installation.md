@@ -18,16 +18,13 @@ pip install CustomerFrequency
 
 Run the file **data_generator.ipynb**
 
-## SQL Connection
+# SQL Connection
 
-Establish a SQL connection and execute a query to retrieve movie data using the following link: [SQL](SQL.md)
+Establish a SQL connection and execute a query to retrieve transaction data using the following link: [SQL](SQL.md)
 
 
 ## FastAPI Integration
 
 Run the file **run.py** for connecting to API.
 
-
-
-After these steps copy the host link and paste it in the search bar adding "docs" after it. There are different functionalities in the FASTAPI page. We can CREATE a movie, UPDATE a movie, delete a movie in our data. Also there is a function to get recommendation based on the imput of a movie name.
-
+After these steps copy the host link and paste it in the search bar adding "docs" after it. There are different functionalities in the FASTAPI page. We can get average frequency, top customers, transactions, also we can create, update or delete the data. 
