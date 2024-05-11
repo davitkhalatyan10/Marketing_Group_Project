@@ -70,7 +70,8 @@ Run the file **run.py** for connecting to API.
 
 After these steps copy the host link and paste it in the search bar adding "docs" after it. There are different functionalities in the FASTAPI page. We can get average frequency, top customers, transactions, also we can create, update or delete the data. 
 
-
+**MkDocs**
+[Mkdocs File](http://127.0.0.1:8000/)
 
 
 
