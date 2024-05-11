@@ -1,7 +1,6 @@
 import pandas as pd
 
 # Load your transactional data from the database or CSV file
-transaction_data = pd.read_csv(transaction_file_path)
 
 def calculate_rfm_scores(transaction_data, output_file_path):
     """
@@ -35,7 +34,15 @@ def calculate_rfm_scores(transaction_data, output_file_path):
     # Sort the table based on RFM score
     rfm_table = rfm_table.sort_values(by='RFM_score', ascending=False)
 
+  
+
+
     # Save the RFM table to a CSV file
     rfm_table.to_csv(output_file_path)
 
     return rfm_table
+
+
+transaction_data = pd.read_csv('Data/transactions_data.csv')
+output_file_path = ('Data/rfm_scores.csv')
+calculate_rfm_scores(transaction_data, output_file_path)
