@@ -96,7 +96,7 @@ class CustomerSegmentation(Base):
     __tablename__='rfm_table'
 
     id = Column(Integer,primary_key=True)
-    customer_id = Column(Integer, ForeignKey('customers.customer_id'))
+    CustomerId = Column(Integer, ForeignKey('customers.customer_id'))
     Recency = Column(Integer) 
     Frequency = Column(Integer)
     Monetary = Column(Integer)
