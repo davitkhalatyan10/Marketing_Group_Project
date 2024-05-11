@@ -74,12 +74,9 @@ After these steps copy the host link and paste it in the search bar adding "docs
 
 [Mkdocs File](http://127.0.0.1:8000/)
 
+**PyPiLink**
 
-
-
-
-https://test.pypi.org/project/CustomerFrequency/
-https://pypi.org/manage/project/customerfrequency/releases/
+[PyPiLink](https://pypi.org/manage/project/customerfrequency/releases/)
 
 
 **Members:**
