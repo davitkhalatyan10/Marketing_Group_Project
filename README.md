@@ -49,22 +49,22 @@ Installation
 2.	Navigate to the project directory: cd [project-directory]
 3.	Install dependencies: pip install -r requirements.txt
 
-Setting Up the Database
+*Setting Up the Database*
 
 1.	Run the setup.py script to set up the initial database and environment: setup
 2.	Run this line to install our package
 pip install CustomerFrequency
 
 
-Data Generation
+*Data Generation*
 
 Run the file data_generator.ipynb
 
-SQL Connection
+*SQL Connection*
 
 Establish a SQL connection and execute a query to retrieve transaction data 
 
-FastAPI Integration
+*FastAPI Integration*
 
 Run the file **run.py** for connecting to API.
 
