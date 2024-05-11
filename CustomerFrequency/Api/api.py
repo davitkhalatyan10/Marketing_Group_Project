@@ -17,7 +17,6 @@ class SMSBody(BaseModel):
 
 app = FastAPI()
 dbname = 'temp'
-cs.main()
 dir_changed = False
 
 
@@ -43,6 +42,7 @@ async def root():
 async def get_customer_segments_plot():
     global dir_changed
     if not dir_changed:
+        cs.main()
         os.chdir('CustomerFrequency/Api/')
         dir_changed = True
     image_path = 'customer_segments_plot.jpg'
@@ -53,6 +53,7 @@ async def get_customer_segments_plot():
 async def get_boxplot():
     global dir_changed
     if not dir_changed:
+        cs.main()
         os.chdir('CustomerFrequency/Api/')
         dir_changed = True
     image_path = 'boxplot.jpg'
@@ -63,6 +64,7 @@ async def get_boxplot():
 async def get_scatter_plot():
     global dir_changed
     if not dir_changed:
+        cs.main()
         os.chdir('CustomerFrequency/Api/')
         dir_changed = True
     image_path = 'scatter_plot.jpg'
