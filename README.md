@@ -74,6 +74,27 @@ After these steps copy the host link and paste it in the search bar adding "docs
 
 [Mkdocs File](http://127.0.0.1:8000/)
 
+**API calls**
+
+•	[DELETE](http://localhost:8000/docs#/default/coffee_transaction_create_data_coffee_purchase_post)
+
+•	[PUT](http://localhost:8000/docs#/default/update_item_update_data__item_id__put)
+
+•	[POST](http://localhost:8000/docs#/default/create_item_create_data_post)
+
+• [AVGFREQUENCY](http://localhost:8000/docs#/default/reach_lowest_average_visit_frequency_get_data_avg_frequency_get) 
+
+• [CUSTOMERSEGMENTATIONPLOT](http://localhost:8000/docs#/default/get_customer_segments_plot_get_customer_segments_plot_get)
+
+• [GETBOXPLOT](http://localhost:8000/docs#/default/get_boxplot_get_boxplot_get)
+
+• [GETSCATTERPLOT](http://localhost:8000/docs#/default/get_scatter_plot_get_scatter_plot_get)
+
+• [GETTOPCUSTOMERS](http://localhost:8000/docs#/default/appreciate_top_visits_get_data_top_customers_get)
+
+• [GETBESTSELLERNOTIFICATION](http://localhost:8000/docs#/default/bestseller_notification_get_data_bestseller_get)
+
+
 **PyPiLink**
 
 [PyPiLink](https://pypi.org/manage/project/customerfrequency/releases/)
