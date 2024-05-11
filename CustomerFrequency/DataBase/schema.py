@@ -100,10 +100,10 @@ class CustomerSegmentation(Base):
     Recency = Column(Integer) 
     Frequency = Column(Integer)
     Monetary = Column(Integer)
-    R_score = Column(Integer) 
-    F_score = Column(Integer)
-    M_score = Column(Integer)
-    RFM_score = Column(Integer)
+    R_Quartile= Column(Integer) 
+    F_Quartile = Column(Integer)
+    M_Quartile = Column(Integer)
+    RFMScore = Column(Integer)
 
     rfm_table = relationship("rfm_table")
 

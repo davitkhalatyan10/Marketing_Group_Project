@@ -36,6 +36,6 @@ Inst5.insert_many(data5)
 Inst5.close_cnxn()
 
 Inst6 = SqlHandler('temp', 'rfm_table')
-data6 = pd.read_csv('Data/rfm_scores.csv')
+data6 = pd.read_csv('Data/rfm_data.csv')
 Inst6.insert_many(data6) 
 Inst6.close_cnxn()

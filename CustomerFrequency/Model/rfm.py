@@ -1,53 +1,94 @@
 import pandas as pd
-import os
-# Load your transactional data from the database or CSV file
 
-def calculate_rfm_scores(transaction_data):
+def calculate_rfm_scores(transactions_df):
     """
     Calculate RFM scores for each customer based on transactional data.
 
     Args:
-        transaction_data (DataFrame): DataFrame containing transactional data.
+        transactions_df (DataFrame): DataFrame containing transactional data.
 
     Returns:
         DataFrame: DataFrame containing RFM scores for each customer.
     """
-    # Calculate Recency, Frequency, and Monetary metrics
-    rfm_table = transaction_data.groupby('customer_id').agg({
-        'date_of_payment': lambda x: (pd.Timestamp.now() - pd.to_datetime(x).max()).days,  # Recency
-        'transaction_id': 'count',  # Frequency
-        'amount': 'sum'  # Monetary
-    }).rename(columns={
-        'date_of_payment': 'Recency',
-        'transaction_id': 'Frequency',
-        'amount': 'Monetary'
-    })
+    now = pd.to_datetime('2024-05-11')  # Assuming you want the date in the same format
 
-    # Calculate RFM scores
-    rfm_table['R_score'] = pd.qcut(rfm_table['Recency'], q=4, labels=False, duplicates='drop') + 1
-    rfm_table['F_score'] = pd.qcut(rfm_table['Frequency'], q=4, labels=False, duplicates='drop') + 1
-    rfm_table['M_score'] = pd.qcut(rfm_table['Monetary'], q=4, labels=False, duplicates='drop') + 1
+    # Calculate Recency
+    recency_df = transactions_df.groupby('customer_id')['date_of_payment'].max().reset_index()
+    recency_df.columns = ['CustomerID', 'LastPurchaseDate']
+    recency_df['Recency'] = (now - recency_df['LastPurchaseDate']).dt.days
+    recency_df.drop('LastPurchaseDate', axis=1, inplace=True)
 
-    # Calculate RFM score
-    rfm_table['RFM_score'] = rfm_table['R_score'] * 100 + rfm_table['F_score'] * 10 + rfm_table['M_score']
+    # Calculate Frequency
+    transactions_df.drop_duplicates(subset=['transaction_id', 'customer_id'], keep="first", inplace=True)
+    frequency_df = transactions_df.groupby('customer_id')['transaction_id'].count().reset_index()
+    frequency_df.columns = ['CustomerID', 'Frequency']
 
-    # Sort the table based on RFM score
-    rfm_table = rfm_table.sort_values(by='RFM_score', ascending=False)
+    # Calculate Monetary
+    transactions_df['TotalCost'] = transactions_df['amount']
+    monetary_df = transactions_df.groupby('customer_id')['TotalCost'].sum().reset_index()
+    monetary_df.columns = ['CustomerID', 'Monetary']
 
-    return rfm_table
+    # Merge Recency, Frequency, and Monetary DataFrames
+    temp_df = recency_df.merge(frequency_df, on='CustomerID')
+    rfm_df = temp_df.merge(monetary_df, on='CustomerID')
 
-def save_rfm_csv(output_file_path,rfm_table):
-    # Save the RFM table to a CSV file
-    if os.path.exists(output_file_path):
-        os.remove(output_file_path)
-        rfm_table.to_csv(output_file_path)
+    # Set CustomerID as index
+    rfm_df.set_index('CustomerID', inplace=True)
+
+    return rfm_df
+
+def assign_score(x, p, d):
+    """
+    Assign score based on quartiles.
+
+    Args:
+        x (int): Value.
+        p (str): Column name.
+        d (dict): Quartiles dict.
+
+    Returns:
+        int: Score.
+    """
+    if x <= d[p][0.25]:
+        return 4
+    elif x <= d[p][0.50]:
+        return 3
+    elif x <= d[p][0.75]: 
+        return 2
     else:
-        rfm_table.to_csv(output_file_path)
+        return 1
 
+def assign_rfm_score(rfm_segmentation, quantiles):
+    """
+    Assign RFM score based on quartiles.
 
+    Args:
+        rfm_segmentation (DataFrame): DataFrame containing RFM data.
+        quantiles (dict): Quartiles dict.
+    """
+    rfm_segmentation['R_Quartile'] = rfm_segmentation['Recency'].apply(assign_score, args=('Recency', quantiles))
+    rfm_segmentation['F_Quartile'] = rfm_segmentation['Frequency'].apply(assign_score, args=('Frequency', quantiles))
+    rfm_segmentation['M_Quartile'] = rfm_segmentation['Monetary'].apply(assign_score, args=('Monetary', quantiles))
+    rfm_segmentation['RFMScore'] = rfm_segmentation['R_Quartile'].map(str) + rfm_segmentation['F_Quartile'].map(str) + rfm_segmentation['M_Quartile'].map(str)
 
-# transaction_data = pd.read_csv('Data/transactions_data.csv')
-# output_file_path = ('Data/rfm_scores.csv')
-# table  = calculate_rfm_scores(transaction_data, output_file_path)
-# print(table)
-# print(table.dtypes)
+    for column in rfm_segmentation.columns:
+        if rfm_segmentation[column].dtype == 'int64':
+            rfm_segmentation[column] = rfm_segmentation[column].astype('float64')
+
+    return rfm_segmentation
+
+# Load your transactional data from the CSV file
+transactions_df = pd.read_csv('Data/transactions_data.csv')
+transactions_df['date_of_payment'] = pd.to_datetime(transactions_df['date_of_payment'])
+
+# Calculate RFM scores
+rfm_segmentation = calculate_rfm_scores(transactions_df)
+
+# Get quartiles
+quantiles = rfm_segmentation.quantile(q=[0.25,0.5,0.75]).to_dict()
+
+# Assign RFM scores
+rfm_segmentation = assign_rfm_score(rfm_segmentation, quantiles)
+
+# Save RFM scores to a CSV file
+rfm_segmentation.to_csv('Data/rfm_data.csv')
