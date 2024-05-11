@@ -1,9 +1,13 @@
 import twilio.base.exceptions
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from twilio.rest import Client
+import os
 import pandas as pd
 from pydantic import BaseModel
 from ..DataBase import sql_interactions as sqlint
+from ..Model import customer_segmentation as cs
+from ..Model import rfm
 
 
 class SMSBody(BaseModel):
@@ -13,6 +17,8 @@ class SMSBody(BaseModel):
 
 app = FastAPI()
 dbname = 'temp'
+cs.main()
+dir_changed = False
 
 
 @app.post("/send-sms/")
@@ -32,25 +38,35 @@ async def send_sms(sms_body: SMSBody):
 async def root():
     return {"message": "Hello World"}
 
-@app.get("/get_data")
-async def get_records():
-    return {'data': 'data'}
-'''
-@app.get("/get_image1")
-async def get_visualization1():
-    image_path = Path('visualization1.png')
+
+@app.get("/get_customer_segments_plot")
+async def get_customer_segments_plot():
+    global dir_changed
+    if not dir_changed:
+        os.chdir('CustomerFrequency/Api/')
+        dir_changed = True
+    image_path = 'customer_segments_plot.jpg'
     return FileResponse(image_path)
 
-@app.get("/get_image2")
-async def get_visualization2():
-    image_path = Path('visualization2.png')
+
+@app.get("/get_boxplot")
+async def get_boxplot():
+    global dir_changed
+    if not dir_changed:
+        os.chdir('CustomerFrequency/Api/')
+        dir_changed = True
+    image_path = 'boxplot.jpg'
     return FileResponse(image_path)
 
-@app.get("/get_image3")
-async def get_visualization3():
-    image_path = Path('visualization3.png')
+
+@app.get("/get_scatter_plot")
+async def get_scatter_plot():
+    global dir_changed
+    if not dir_changed:
+        os.chdir('CustomerFrequency/Api/')
+        dir_changed = True
+    image_path = 'scatter_plot.jpg'
     return FileResponse(image_path)
-'''
 
 
 @app.get("/get_data/avg_frequency")
@@ -75,6 +91,7 @@ async def reach_lowest_average_visit_frequency(n: int):
             pass
     return status
 
+
 @app.get("/get_data/no_visit")
 async def attract_no_visit_n_days(n: int):
     '''
@@ -93,6 +110,7 @@ async def attract_no_visit_n_days(n: int):
             pass
 
     return status
+
 
 @app.get("/get_data/top_customers")
 async def appreciate_top_visits(n: int):
@@ -114,6 +132,7 @@ async def appreciate_top_visits(n: int):
 
     return status
 
+
 @app.get("/get_data/bestseller")
 async def bestseller_notification():
     '''
@@ -133,9 +152,19 @@ async def bestseller_notification():
 
     return status
 
+
+@app.get('/get_data/rfm')
+def display_rfm_scores():
+    transaction_data = pd.read_csv('Data/transactions_data.csv')
+    output_file_path = 'Data/rfm_scores.csv'
+    scores = rfm.calculate_rfm_scores(transaction_data, output_file_path)
+    return scores.to_dict('list')
+
+
 @app.post("/create_data")
 async def create_item(item):
     return {'item': 'inserted'}
+
 
 @app.post("/create_data/coffee_purchase")
 async def coffee_transaction(transaction_id, date_of_payment, amount, type, customer_id, employee_id):
@@ -148,9 +177,11 @@ async def coffee_transaction(transaction_id, date_of_payment, amount, type, cust
     transactions.insert_many(pd.DataFrame(data))
     return {'message': 'Data inserted successfully'}
 
+
 @app.put("/update_data/{item_id}")
 async def update_item(item_id, item):
     return {"message": "Item updated successfully"}
+
 
 @app.delete("/delete_data/{record_id}")
 async def delete_record(record_id: int):
