@@ -3,6 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+import matplotlib
+matplotlib.use('TkAgg')
+
 
 def load_data(customer_file_path, transaction_file_path):
 
@@ -148,9 +151,10 @@ def visualize_customer_segments(customer_segment_distribution):
     ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
             shadow=True, startangle=90, colors=colors)
     ax1.axis('equal')
-
+    plt.savefig('CustomerFrequency/Api/customer_segments_plot.jpg')
     plt.title('Customer Segmentation Based on Transaction Frequency')
     plt.show()
+
 
 
 
@@ -239,7 +243,7 @@ def visualize_data(df):
 
     medians = df.groupby(['customer_segment'])['satisfaction_score'].median().values
     median_labels = [str(np.round(s, 2)) for s in medians]
-
+    plt.savefig('CustomerFrequency/Api/boxplot.jpg')
     pos = range(len(medians))
     for tick, label in zip(pos, boxplot.get_xticklabels()):
         boxplot.text(pos[tick], medians[tick] + 0.1, median_labels[tick], 
@@ -251,75 +255,75 @@ def visualize_data(df):
     plt.figure(figsize=(12, 8))
     scatterplot = sns.scatterplot(x='transaction_count', y='satisfaction_score', data=df)
     sns.regplot(x='transaction_count', y='satisfaction_score', data=df, scatter=False, ax=scatterplot)
-
+    plt.savefig('CustomerFrequency/Api/scatter_plot.jpg')
     scatterplot.set_title('Transaction Count vs Satisfaction Score')
     scatterplot.set_xlabel('Transaction Count')
     scatterplot.set_ylabel('Satisfaction Score')
     plt.show()
 
-# def main():
-#     """
-#     Main function to execute the analysis workflow.
-#     """
-#     customer_file_path = './Data/customer_data.csv'
-#     transaction_file_path = './Data/transactions_data.csv'
-#     output_file_path = './Data/Customer_Transaction_with_Satisfaction.csv'
+def main():
+    """
+    Main function to execute the analysis workflow.
+    """
+    customer_file_path = './Data/customer_data.csv'
+    transaction_file_path = './Data/transactions_data.csv'
+    output_file_path = './Data/Customer_Transaction_with_Satisfaction.csv'
 
 
-#     customer_data, transaction_data = load_data(customer_file_path, transaction_file_path)
-#     # display_data_head(customer_data, transaction_data)
-#     transaction_data = convert_date_format(transaction_data)
-#     customer_transaction_data = calculate_transactions_per_customer(transaction_data, customer_data)
-#     customer_segment_distribution,customer_transaction_data = define_customer_segments(customer_transaction_data)
-#     # print(customer_segment_distribution)
-#     # print(customer_transaction_data)
+    customer_data, transaction_data = load_data(customer_file_path, transaction_file_path)
+    # display_data_head(customer_data, transaction_data)
+    transaction_data = convert_date_format(transaction_data)
+    customer_transaction_data = calculate_transactions_per_customer(transaction_data, customer_data)
+    customer_segment_distribution,customer_transaction_data = define_customer_segments(customer_transaction_data)
+    # print(customer_segment_distribution)
+    # print(customer_transaction_data)
 
-#     customer_transaction_data = generate_satisfaction_scores(customer_transaction_data)
-#     # print(customer_transaction_data)
-#     customer_transaction_data.drop('first_name', inplace=True, axis=1) 
-#     customer_transaction_data.drop('last_name', inplace=True, axis=1) 
-#     customer_transaction_data.drop('phone_number', inplace=True, axis=1) 
-#     # print(customer_transaction_data)
-#     # Attempting to save the updated customer transaction data with satisfaction scores to a CSV file
-#     import os 
-#     # Check whether the specified 
-#     # path exists or not 
-#     if os.path.exists(output_file_path):
-#         os.remove(output_file_path)
-#         save_data_with_satisfaction_scores(customer_transaction_data, output_file_path)
-#     else:
-#         save_data_with_satisfaction_scores(customer_transaction_data, output_file_path)
+    customer_transaction_data = generate_satisfaction_scores(customer_transaction_data)
+    # print(customer_transaction_data)
+    customer_transaction_data.drop('first_name', inplace=True, axis=1) 
+    customer_transaction_data.drop('last_name', inplace=True, axis=1) 
+    customer_transaction_data.drop('phone_number', inplace=True, axis=1) 
+    # print(customer_transaction_data)
+    # Attempting to save the updated customer transaction data with satisfaction scores to a CSV file
+    import os 
+    # Check whether the specified 
+    # path exists or not 
+    if os.path.exists(output_file_path):
+        os.remove(output_file_path)
+        save_data_with_satisfaction_scores(customer_transaction_data, output_file_path)
+    else:
+        save_data_with_satisfaction_scores(customer_transaction_data, output_file_path)
 
-#     # Load data
-#     customer_data, transaction_data = load_data(customer_file_path, transaction_file_path)
+    # Load data
+    customer_data, transaction_data = load_data(customer_file_path, transaction_file_path)
 
-#     # Display data head
-#     display_data_head(customer_data, transaction_data)
+    # Display data head
+    display_data_head(customer_data, transaction_data)
 
-#     # Convert date format
-#     convert_date_format(transaction_data)
+    # Convert date format
+    convert_date_format(transaction_data)
 
-#     # Calculate transactions per customer
-#     customer_transaction_data = calculate_transactions_per_customer(transaction_data, customer_data)
-#     print(customer_transaction_data.head())
+    # Calculate transactions per customer
+    customer_transaction_data = calculate_transactions_per_customer(transaction_data, customer_data)
+    print(customer_transaction_data.head())
 
-#     # Define customer segments
-#     customer_segment_distribution,customer_transaction_data = define_customer_segments(customer_transaction_data)
-#     print(customer_segment_distribution)
-#     print(customer_transaction_data.head())
+    # Define customer segments
+    customer_segment_distribution,customer_transaction_data = define_customer_segments(customer_transaction_data)
+    print(customer_segment_distribution)
+    print(customer_transaction_data.head())
 
-#     # Visualize customer segments
-#     visualize_customer_segments(customer_segment_distribution)
+    # Visualize customer segments
+    visualize_customer_segments(customer_segment_distribution)
 
-#     # Analyze data
-#     analysis_results = analyze_data(output_file_path)
-#     print("\nAnalysis Results:\n", analysis_results)
+    # Analyze data
+    analysis_results = analyze_data(output_file_path)
+    print("\nAnalysis Results:\n", analysis_results)
 
-#     # Visualize data
-#     visualize_data(pd.read_csv(output_file_path))
+    # Visualize data
+    visualize_data(pd.read_csv(output_file_path))
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
     
 
 """1. Boxplot (Satisfaction Scores by Customer Segment):
