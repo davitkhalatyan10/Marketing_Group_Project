@@ -1,4 +1,4 @@
-# DS223-Marketing-Analytics-Group-Project-Group2
+DS223-Marketing-Analytics-Group-Project-Group2
 # Customer Analysis 
 
 # Overview
@@ -12,49 +12,63 @@ Customer retention is a pervasive challenge encountered by businesses across div
 The Customer Frequency Analysis Python Package provides a comprehensive toolkit for businesses to conduct customer frequency analysis. By analyzing transaction data, businesses can identify patterns and trends in customer behavior, segment customers based on their transaction history, and visualize insights to inform decision-making.
 The Customer Frequency Analysis Python Package offers a comprehensive toolkit tailored for businesses seeking to delve deep into their customer data. Leveraging transaction records, the package enables businesses to uncover intricate patterns and trends in customer behavior, essential for informed decision-making and strategic planning. With a focus on customer retention and satisfaction, the package provides advanced segmentation techniques to categorize customers into distinct groups based on their transaction history, preferences, and engagement levels. Additionally, the package incorporates two primary case scenarios: RFM (Recency, Frequency, Monetary) analysis and segmentation analysis.
 
-- Case Scenario 1
-  *RFM Analysis:* RFM analysis is a powerful method used to segment customers based on their transactional behavior. It evaluates three key metrics: Recency (how recently a customer made a purchase), Frequency (how often a customer makes purchases), and Monetary Value (the total amount spent by a customer). By applying RFM analysis, businesses can identify high-value customers, understand their purchasing habits, and tailor marketing strategies to enhance their engagement and loyalty.
+**Case Scenario 1**
 
-- Case Scenario 2
-  *Segmentation Analysis:* Segmentation analysis involves dividing customers into distinct groups based on shared characteristics or behaviors. This approach goes beyond RFM metrics and allows businesses to create more nuanced customer segments. By analyzing transactional data and additional customer attributes, such as demographics or purchasing preferences, businesses can gain deeper insights into their customer base. Segmentation analysis enables personalized marketing campaigns, targeted promotions, and tailored product offerings, ultimately driving customer satisfaction and loyalty.
-Through the integration of RFM analysis and segmentation techniques, the Customer Frequency Analysis Python Package empowers businesses to unlock the full potential of their customer data, driving growth, and competitiveness across diverse industries.
+*Restaurant Marketing Strategy*
+
+# Scenario: A restaurant aims to enhance customer engagement and drive repeat business.
+
+Use of Customer Frequency Analysis: By analyzing customer frequency, the restaurant can identify its most loyal customers and understand their preferences better. For example, they can determine which dishes or promotions attract customers back more frequently. With this insight, they can create targeted marketing campaigns or loyalty rewards that appeal to specific customer segments. Additionally, they can identify customers who haven't visited in a while and offer them incentives to return, such as discounts or special events. Customer frequency analysis guides the restaurant in crafting personalized experiences and communication strategies to increase customer retention and overall satisfaction.
+
+**Case Scenario 2**
+
+*Online Marketplace Customer Engagement*
+
+# Scenario: An online marketplace wants to improve customer engagement and increase repeat purchases.
+Use of Customer Frequency Analysis: By analyzing how often customers make purchases on the platform, the marketplace can identify segments of users with varying levels of engagement. For example, they may find that certain customers make frequent purchases while others only buy occasionally. With this insight, the marketplace can personalize product recommendations, email campaigns, and promotions based on each customer's buying frequency. They can also identify trends such as seasonal fluctuations or specific product preferences among high-frequency purchasers and tailor their marketing strategies accordingly. Additionally, they can experiment with loyalty programs or subscription options to incentivize more frequent purchases. Customer frequency analysis helps the online marketplace understand customer behavior and implement targeted strategies to increase engagement and drive sales.
 
 # Result
 With the Customer Frequency Analysis Python Package, businesses can:
-•	Gain insights into customer frequency, recency, and monetary value
 
-•	Segment customers into different groups based on transaction behavior
+*     Gain insights into customer frequency, recency, and monetary value
 
-•	Target specific customer segments with personalized marketing strategies
+*     Segment customers into different groups based on transaction behavior
 
-•	Optimize product offerings and pricing strategies to meet customer needs
+*      Target specific customer segments with personalized marketing strategies
 
-•	Enhance customer satisfaction and drive repeat business
+*      Optimize product offerings and pricing strategies to meet customer needs
+
+*     Enhance customer satisfaction and drive repeat business
 
 # Features
-•	Data Management: Store and retrieve transaction data in a centralized database
+*        Data Management: Store and retrieve transaction data in a centralized database
 
-•	Frequency Analysis: Identify patterns in customer behavior, such as purchase frequency and recency
+*     Frequency Analysis: Identify patterns in customer behavior, such as purchase frequency and recency
 
-•	Segmentation: Segment customers into different groups based on transaction history
+*     Segmentation: Segment customers into different groups based on transaction history
 
-•	Visualization: Create charts, graphs, and reports to visualize customer behavior trends
+*       Visualization: Create charts, graphs, and reports to visualize customer behavior trends
 
-•	API Integration: Integrate with existing systems and workflows using the provided API
+*      API Integration: Integrate with existing systems and workflows using the provided API
 
 # Usage
+
 **Installation**
 
-1.	Clone the repository: git clone [repository-url]
-2.	Navigate to the project directory: cd [project-directory]
-3.	Install dependencies: pip install -r requirements.txt
+1.      Clone the repository: git clone [repository-url]
+2.      Navigate to the project directory: cd [project-directory]
+3.      Install dependencies: pip install -r requirements.txt
+
 
 **Setting Up the Database**
 
-1.	Run the setup.py script to set up the initial database and environment: setup
-2.	Run this line to install our package
+   *Run the setup.py script to set up the initial database and environment.*
+   
+   *Run this line to install our package:*
+```
 pip install CustomerFrequency
 
+```
 
 **Data Generation**
 
@@ -67,7 +81,6 @@ Establish a SQL connection and execute a query to retrieve transaction data
 **FastAPI Integration**
 
 Run the file **run.py** for connecting to API.
-
 After these steps copy the host link and paste it in the search bar adding "docs" after it. There are different functionalities in the FASTAPI page. We can get average frequency, top customers, transactions, also we can create, update or delete the data. 
 
 **MkDocs**
@@ -76,11 +89,11 @@ After these steps copy the host link and paste it in the search bar adding "docs
 
 **API calls**
 
-•	[DELETE](http://localhost:8000/docs#/default/coffee_transaction_create_data_coffee_purchase_post)
+•       [DELETE](http://localhost:8000/docs#/default/coffee_transaction_create_data_coffee_purchase_post)
 
-•	[PUT](http://localhost:8000/docs#/default/update_item_update_data__item_id__put)
+•       [PUT](http://localhost:8000/docs#/default/update_item_update_data__item_id__put)
 
-•	[POST](http://localhost:8000/docs#/default/create_item_create_data_post)
+•       [POST](http://localhost:8000/docs#/default/create_item_create_data_post)
 
 • [AVGFREQUENCY](http://localhost:8000/docs#/default/reach_lowest_average_visit_frequency_get_data_avg_frequency_get) 
 
@@ -95,9 +108,11 @@ After these steps copy the host link and paste it in the search bar adding "docs
 • [GETBESTSELLERNOTIFICATION](http://localhost:8000/docs#/default/bestseller_notification_get_data_bestseller_get)
 
 
+
 **PyPiLink**
 
 [PyPiLink](https://pypi.org/manage/project/customerfrequency/releases/)
+
 
 
 **Members:**
