@@ -96,14 +96,14 @@ class CustomerSegmentation(Base):
     __tablename__='rfm_table'
 
     id = Column(Integer,primary_key=True)
-    customer_id = Column(Integer, ForeignKey('customers.customer_id'))
+    CustomerId = Column(Integer, ForeignKey('customers.customer_id'))
     Recency = Column(Integer) 
     Frequency = Column(Integer)
     Monetary = Column(Integer)
-    R_score = Column(Integer) 
-    F_score = Column(Integer)
-    M_score = Column(Integer)
-    RFM_score = Column(Integer)
+    R_Quartile= Column(Integer) 
+    F_Quartile = Column(Integer)
+    M_Quartile = Column(Integer)
+    RFMScore = Column(Integer)
 
     rfm_table = relationship("rfm_table")
 

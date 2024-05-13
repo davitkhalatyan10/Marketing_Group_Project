@@ -2,14 +2,19 @@ site_name: Customer Frequency
 
 nav:
   - CustomerFrequency: index.md
+  - Schema: Schema.md
   - User's Guide: installation.md
   - Setup: setup.md
   - Logger: Logger.md
-  - API: API.md
-  - SQL: SQL.md
+  - API: api.md
+  - SQL: sql.md
   - Model: Models.md
 
+extra:
+  static_dir:
+    - docs/img
 plugins:
+  - glightbox
   - mkdocstrings:
       default_handler: python
       handlers:
@@ -58,6 +63,7 @@ markdown_extensions:
   - pymdownx.mark
   - attr_list
   - md_in_html
+
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
